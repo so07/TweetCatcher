@@ -1,0 +1,96 @@
+import re
+import datetime
+
+__version__ = "0.1.0"
+
+def add_parser_debug(parser):
+
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="%(prog)s " + __version__,
+        help="print version information",
+    )
+
+    parser.add_argument(
+        "-v", "--verbose", action="count", default=0, help="increase verbosity"
+    )
+
+    parser.add_argument(
+        "--debug", "--dry-run", dest="dry_run", action="store_true", help="dry-run mode"
+    )
+
+def add_parser_date(parser):
+
+    def _date(s):
+
+        fmt_day = "%Y-%m-%d"
+        fmt_time = "%H:%M:%S"
+        fmt_minutes = "%H:%M"
+        sep = "T"
+
+        for fmt in (
+            fmt_day,
+            fmt_time,
+            fmt_day + sep + fmt_time,
+            fmt_day + sep + fmt_minutes,
+        ):
+            try:
+                return datetime.datetime.strptime(s, fmt)
+            except:
+                pass
+        else:
+            raise ValueError("invalid date {}".format(s))
+
+    def _freq(s):
+
+        if s is None:
+            return None, None
+
+        digit = int(re.findall(r"\d+", s)[0])
+
+        print(digit)
+
+        freq_str = s.upper()
+
+        if "y" in s.lower():
+            freq_time = datetime.timedelta(years=digit)
+        if "d" in s.lower():
+            freq_time = datetime.timedelta(days=digit)
+        if "h" in s.lower():
+            freq_time = datetime.timedelta(hours=digit)
+        if "m" in s.lower():
+            freq_str = str(digit) + "T"
+            freq_time = datetime.timedelta(minutes=digit)
+        if "s" in s.lower():
+            freq_time = datetime.timedelta(seconds=digit)
+
+        return freq_str, freq_time
+
+    parser.add_argument(
+        "--from",
+        dest="from_date",
+        type=_date,
+        default=datetime.datetime(1970, 1, 1).isoformat(sep="T", timespec="minutes"),
+        metavar="1985-10-26T01:20:00",
+        help="starting date in format 1985-10-26T01:20:00",
+    )
+
+    parser.add_argument(
+        "--to",
+        dest="to_date",
+        type=_date,
+        default=datetime.datetime.now().isoformat(sep="T", timespec="minutes"),
+        metavar="2015-10-21T07:28:00",
+        help="until date in format 2015-10-21T07:28:00",
+    )
+
+    parser.add_argument(
+        "--freq",
+        dest="freq",
+        type=_freq,
+        default=(None, None),
+        metavar="xY, xD, xH, xM, xS",
+        help="frequency for download data. y/Y for years, d/D for days, h/H for hours, m/M for minutes, s/S for seconds. '30M' download data with time interval of 30 minutes",
+    )
+
