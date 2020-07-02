@@ -15,7 +15,7 @@ def twint_search(search, since, until, output):
     c.Search = search
     # c.Username = search
 
-    c.Limit = 10
+    #c.Limit = 10
 
     c.Since = since
     c.Until = until
@@ -54,7 +54,7 @@ def tweet_catcher(
     directory,
     freq_in_str="1D",
     freq_in_timedelta=datetime.timedelta(days=1),
-    sleep=10,
+    sleep=2,
     verbose=0,
 ):
     def twint_call(search, since, until, directory, file_name):
