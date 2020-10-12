@@ -2,6 +2,7 @@ import ast
 
 from .catcher_utils import logger, set_logging_verbosity, read_csv
 
+
 def get_hashtags(df):
     h = set()
     for i in df.hashtags.tolist():
@@ -9,7 +10,6 @@ def get_hashtags(df):
     h = list(h)
     h.sort()
     return h
-
 
 
 def remove_duplicates(df):
@@ -25,10 +25,8 @@ def remove_duplicates(df):
 
 
 def tweet_cleaner(
-    path,
-    pattern=None,
-    verbose=0,
-        ):
+    path, pattern=None, verbose=0,
+):
 
     # read dataset
     df = read_csv(path, pattern)
@@ -37,7 +35,3 @@ def tweet_cleaner(
     df = remove_duplicates(df)
 
     return df
-
-
-
-
