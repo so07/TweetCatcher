@@ -103,7 +103,7 @@ def main():
         "-l",
         dest="language",
         metavar="lang",
-        default="en",
+        default=None,
         choices=lang_supported,
         help=f"language. (default %(default)s).\nSupported languages {lang_supported}",
     )
