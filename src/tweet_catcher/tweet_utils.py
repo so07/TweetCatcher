@@ -95,3 +95,7 @@ def write_df_by_date(df, output, format="csv"):
             d.to_csv(out_path)
         elif format == "json":
             d.to_json(out_path)
+        else:
+            raise ValueError(
+                f"format {format} is not supported in write_df_by_date function"
+            )
