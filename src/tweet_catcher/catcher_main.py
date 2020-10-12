@@ -13,6 +13,9 @@ def main():
         formatter_class=argparse.RawTextHelpFormatter,
     )
 
+    add_parser_date(parser)
+    add_parser_debug(parser)
+
     parser.add_argument(
         "--pattern",
         "-p",
@@ -29,8 +32,6 @@ def main():
         help="directory where tweet data are stored. (default %(default)s)",
     )
 
-    add_parser_date(parser)
-
     parser.add_argument(
         "--sleep",
         "-s",
@@ -38,8 +39,6 @@ def main():
         default=0,
         help="interval in seconds between multiple download. (default %(default)s)",
     )
-
-    add_parser_debug(parser)
 
     args = parser.parse_args()
 

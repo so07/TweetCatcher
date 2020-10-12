@@ -71,8 +71,8 @@ def main():
         formatter_class=argparse.RawTextHelpFormatter,
     )
 
-    add_parser_debug(parser)
     add_parser_date(parser)
+    add_parser_debug(parser)
 
     parser.add_argument(
         "--path",

@@ -6,18 +6,20 @@ __version__ = "0.1.0"
 
 def add_parser_debug(parser):
 
-    parser.add_argument(
+    parser_group = parser.add_argument_group("execution options")
+
+    parser_group.add_argument(
         "--version",
         action="version",
         version="%(prog)s " + __version__,
         help="print version information",
     )
 
-    parser.add_argument(
+    parser_group.add_argument(
         "-v", "--verbose", action="count", default=0, help="increase verbosity"
     )
 
-    parser.add_argument(
+    parser_group.add_argument(
         "--debug", "--dry-run", dest="dry_run", action="store_true", help="dry-run mode"
     )
 
@@ -66,7 +68,9 @@ def add_parser_date(parser):
 
         return freq_str, freq_time
 
-    parser.add_argument(
+    parser_group = parser.add_argument_group("date options")
+
+    parser_group.add_argument(
         "--from",
         dest="from_date",
         type=_date,
@@ -75,7 +79,7 @@ def add_parser_date(parser):
         help="start date in format 1985-10-26T01:20:00",
     )
 
-    parser.add_argument(
+    parser_group.add_argument(
         "--to",
         dest="to_date",
         type=_date,
@@ -84,7 +88,7 @@ def add_parser_date(parser):
         help="until date in format 2015-10-21T07:28:00",
     )
 
-    parser.add_argument(
+    parser_group.add_argument(
         "--freq",
         dest="freq",
         type=_freq,
