@@ -1,6 +1,6 @@
 import argparse
 
-from .cleaner import tweet_cleaner
+from .tweet_cleaner import tweet_cleaner
 from .catcher_utils import logger, set_logging_verbosity, write_df_by_date
 from .clargs import add_parser_debug, add_parser_date
 
