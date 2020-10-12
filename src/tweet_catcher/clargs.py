@@ -3,6 +3,7 @@ import datetime
 
 __version__ = "0.1.0"
 
+
 def add_parser_debug(parser):
 
     parser.add_argument(
@@ -20,8 +21,8 @@ def add_parser_debug(parser):
         "--debug", "--dry-run", dest="dry_run", action="store_true", help="dry-run mode"
     )
 
-def add_parser_date(parser):
 
+def add_parser_date(parser):
     def _date(s):
 
         fmt_day = "%Y-%m-%d"
@@ -49,12 +50,10 @@ def add_parser_date(parser):
 
         digit = int(re.findall(r"\d+", s)[0])
 
-        print(digit)
-
         freq_str = s.upper()
 
         if "y" in s.lower():
-            freq_time = datetime.timedelta(years=digit)
+            freq_time = datetime.timedelta(days=365 * digit)
         if "d" in s.lower():
             freq_time = datetime.timedelta(days=digit)
         if "h" in s.lower():
@@ -73,7 +72,7 @@ def add_parser_date(parser):
         type=_date,
         default=datetime.datetime(1970, 1, 1).isoformat(sep="T", timespec="minutes"),
         metavar="1985-10-26T01:20:00",
-        help="starting date in format 1985-10-26T01:20:00",
+        help="start date in format 1985-10-26T01:20:00",
     )
 
     parser.add_argument(
@@ -91,6 +90,5 @@ def add_parser_date(parser):
         type=_freq,
         default=(None, None),
         metavar="xY, xD, xH, xM, xS",
-        help="frequency for download data. y/Y for years, d/D for days, h/H for hours, m/M for minutes, s/S for seconds. '30M' download data with time interval of 30 minutes",
+        help="data frequency.\ny/Y for years, d/D for days, h/H for hours, m/M for minutes, s/S for seconds.\n'30M' data frequency with time interval of 30 minutes.",
     )
-
