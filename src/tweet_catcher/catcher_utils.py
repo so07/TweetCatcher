@@ -50,8 +50,8 @@ def read_csv(path, pattern="*", extension="csv"):
 
     # convert date in datetime.date
 
-    #df.date = pd.to_datetime(df.date, format="%Y-%m-%d")
-    #df.time = pd.to_datetime(df.time, format="%H:%M:%S")
+    # df.date = pd.to_datetime(df.date, format="%Y-%m-%d")
+    # df.time = pd.to_datetime(df.time, format="%H:%M:%S")
 
     logger.info(f"dataframe length: {len(df)}")
 
@@ -60,7 +60,9 @@ def read_csv(path, pattern="*", extension="csv"):
     return df
 
 
-def write_df_by_date(df, output):
+def write_df_by_date(df, output, format="csv"):
+    logger.debug("@write_df_by_date")
+
     logger.debug(f"output directory: {output}")
     make_dir(output)
 
@@ -72,12 +74,14 @@ def write_df_by_date(df, output):
         logger.debug(f"analize date: {date}")
 
         # select df by date
-        d = df[ df.date == date ]
+        d = df[df.date == date]
 
         # write to file
-        out_path = os.path.join(output, date + ".csv")
+        out_path = os.path.join(output, date + "." + format)
         logger.info(f"writing to file: {out_path}")
         logger.info(f"dataframe length: {len(d)}")
-        d.to_csv(out_path)
 
-
+        if format == "csv":
+            d.to_csv(out_path)
+        elif format == "json":
+            d.to_json(out_path)
