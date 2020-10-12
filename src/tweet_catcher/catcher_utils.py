@@ -63,6 +63,10 @@ def read_csv(path, pattern="*", extension="csv"):
 def write_df_by_date(df, output, format="csv"):
     logger.debug("@write_df_by_date")
 
+    if df.empty:
+        logger.debug("empty dataframe")
+        return
+
     logger.debug(f"output directory: {output}")
     make_dir(output)
 
