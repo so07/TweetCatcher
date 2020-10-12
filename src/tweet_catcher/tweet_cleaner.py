@@ -1,8 +1,7 @@
 import ast
 from langdetect import detect
 
-
-from .catcher_utils import logger, set_logging_verbosity, read_csv
+from .tweet_utils import logger, set_logging_verbosity, read_csv
 
 
 def get_hashtags(df):

@@ -1,7 +1,7 @@
 import argparse
 
 from .tweet_catcher import tweet_catcher
-from .catcher_utils import logger, set_logging_verbosity
+from .tweet_utils import logger, set_logging_verbosity
 from .clargs import add_parser_debug, add_parser_date
 
 

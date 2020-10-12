@@ -5,7 +5,7 @@ import twint
 import logging
 import datetime
 
-from .catcher_utils import logger, set_logging_verbosity, make_dir
+from .tweet_utils import logger, set_logging_verbosity, make_dir
 
 
 def twint_search(search, since, until, output):
