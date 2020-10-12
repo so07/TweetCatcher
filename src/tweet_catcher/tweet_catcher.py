@@ -1,97 +1,63 @@
-import os
-import time
-import pandas as pd
-import twint
-import logging
-import datetime
+import argparse
 
-from .catcher_utils import logger, set_logging_verbosity, make_dir
+from .tweet_catcher import tweet_catcher
+from .catcher_utils import logger, set_logging_verbosity
+from .clargs import add_parser_debug, add_parser_date
 
 
-def twint_search(search, since, until, output):
+def main():
 
-    c = twint.Config()
+    parser = argparse.ArgumentParser(
+        prog="tweet_catcher",
+        description=__doc__,
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
 
-    c.Search = search
-    # c.Username = search
+    parser.add_argument(
+        "--pattern",
+        "-p",
+        dest="pattern",
+        required=True,
+        help="search pattern for tweets",
+    )
 
-    c.Limit = 10
+    parser.add_argument(
+        "--output",
+        "-o",
+        dest="output",
+        default="tweet_search",
+        help="directory where tweet data are stored. (default %(default)s)",
+    )
 
-    c.Since = since
-    c.Until = until
-    c.Hide_output = True
-    # c.Debug = True
+    add_parser_date(parser)
 
-    c.Output = output
-    c.Store_csv = True
+    parser.add_argument(
+        "--sleep",
+        "-s",
+        dest="sleep",
+        default=0,
+        help="interval in seconds between multiple download. (default %(default)s)",
+    )
 
-    c.Count = True
+    add_parser_debug(parser)
 
-    # c.Translate = True
-    # c.TranslateDest = "en"
+    args = parser.parse_args()
 
-    if since or until:
-        print(since, until)
+    set_logging_verbosity(args.verbose)
 
-    # c.Resume = 'wm_last.csv'
+    logger.debug(args)
 
-    twint.run.Search(c)
-
-
-def extend_search(keys):
-    l = []
-    for i in keys:
-        l.append(i.lower())
-        l.append(i.upper())
-        l.append(i.capitalize())
-    return l
+    tweet_catcher(
+        args.pattern,
+        args.from_date,
+        args.to_date,
+        args.output,
+        args.freq[0],
+        args.freq[1],
+        sleep=args.sleep,
+        verbose=args.verbose,
+    )
 
 
-def tweet_catcher(
-    search,
-    since,
-    until,
-    directory,
-    freq_in_str="1D",
-    freq_in_timedelta=datetime.timedelta(days=1),
-    sleep=10,
-    verbose=0,
-):
-    def twint_call(search, since, until, directory, file_name):
-        file_name = file_name.replace(" ", "_")
-        # path to file
-        output = os.path.join(directory, file_name)
-        logger.info(f"file: {output}")
-        # download tweets
-        logger.info(f"download tweet")
-        twint_search(search, since, until, output)
-
-    set_logging_verbosity(verbose)
-
-    make_dir(directory)
-
-    if freq_in_str is None:
-        file_name = f"{search}.csv"
-        twint_call(search, None, None, directory, file_name)
-        return
-
-    daterange = pd.date_range(since, until, freq=freq_in_str)
-    logger.info(f"data range: {daterange}")
-
-    for start_date in daterange:
-
-        # define data range
-        since = start_date.strftime("%Y-%m-%d %H:%M:%S")
-        until = (start_date + freq_in_timedelta).strftime("%Y-%m-%d %H:%M:%S")
-        logger.info(f"data range: {since} {until}")
-
-        # file name
-        file_name = f"{search}_{since}.csv"
-
-        # download tweets
-        twint_call(search, since, until, directory, file_name)
-
-        # wait
-        if sleep:
-            logger.info(f"waiting for {sleep} sec")
-        time.sleep(sleep)
+if __name__ == "__main__":
+    main()
