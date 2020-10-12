@@ -1,2 +1,3 @@
 twint
 pandas
+langdetect
