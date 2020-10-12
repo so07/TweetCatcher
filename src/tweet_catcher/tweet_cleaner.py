@@ -1,58 +1,122 @@
-import ast
-from langdetect import detect
+import argparse
+
+from .cleaner import tweet_cleaner
+from .catcher_utils import logger, set_logging_verbosity, write_df_by_date
+from .clargs import add_parser_debug, add_parser_date
 
 
-from .catcher_utils import logger, set_logging_verbosity, read_csv
+def main():
+
+    parser = argparse.ArgumentParser(
+        prog="tweet_cleaner",
+        description=__doc__,
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+
+    add_parser_debug(parser)
+    add_parser_date(parser)
+
+    parser.add_argument(
+        "--path",
+        "-p",
+        dest="search_path",
+        default="tweet_search",
+        help="directory where search csv file with tweets. (default %(default)s)",
+    )
+
+    parser.add_argument(
+        "--pattern",
+        "-P",
+        dest="search_pattern",
+        default=None,
+        help="pattern of csv file to clean. (default %(default)s)",
+    )
+
+    parser.add_argument(
+        "--output",
+        "-o",
+        dest="output",
+        default="tweet_clean",
+        help="directory where clean tweet data are stored. (default %(default)s)",
+    )
+
+    parser.add_argument(
+        "--language",
+        "-l",
+        dest="language",
+        default="en",
+        help="language. (default %(default)s)",
+        choices=[
+            "af",
+            "ar",
+            "bg",
+            "bn",
+            "ca",
+            "cs",
+            "cy",
+            "da",
+            "de",
+            "el",
+            "en",
+            "es",
+            "et",
+            "fa",
+            "fi",
+            "fr",
+            "gu",
+            "he",
+            "hi",
+            "hr",
+            "hu",
+            "id",
+            "it",
+            "ja",
+            "kn",
+            "ko",
+            "lt",
+            "lv",
+            "mk",
+            "ml",
+            "mr",
+            "ne",
+            "nl",
+            "no",
+            "pa",
+            "pl",
+            "pt",
+            "ro",
+            "ru",
+            "sk",
+            "sl",
+            "so",
+            "sq",
+            "sv",
+            "sw",
+            "ta",
+            "te",
+            "th",
+            "tl",
+            "tr",
+            "uk",
+            "ur",
+            "vi",
+            "zh-cn",
+            "zh-tw",
+        ],
+    )
+
+    args = parser.parse_args()
+
+    set_logging_verbosity(args.verbose)
+
+    logger.debug(args)
+
+    df = tweet_cleaner(
+        args.search_path, args.search_pattern, args.language, args.verbose,
+    )
+
+    write_df_by_date(df, args.output)
 
 
-def get_hashtags(df):
-    h = set()
-    for i in df.hashtags.tolist():
-        h.update(ast.literal_eval(i))
-    h = list(h)
-    h.sort()
-    return h
-
-
-def remove_duplicates(df):
-    """remove duplicates from dataframe.
-       compare twitter ids."""
-
-    ids = df.id.unique()
-    logger.debug(f"unique ids: {len(ids)}")
-
-    # remove duplicates
-    df.drop_duplicates(inplace=True)
-    logger.info(f"dataframe length after removing duplicates: {len(df)}")
-
-    return df
-
-
-def language_filter(df, lang):
-    """filter twitter by language."""
-
-    def check_lang(row):
-        if detect(row.tweet) == lang:
-            return True
-        return False
-
-    mask = df.apply(check_lang, axis=1)
-
-    return df[mask]
-
-
-def tweet_cleaner(
-    path, pattern=None, lang=None, verbose=0,
-):
-
-    # read dataset
-    df = read_csv(path, pattern)
-
-    # remove duplicates
-    df = remove_duplicates(df)
-
-    # language filter
-    if lang is not None:
-        df = language_filter(df, lang)
-
-    return df
+if __name__ == "__main__":
+    main()

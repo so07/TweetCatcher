@@ -23,7 +23,7 @@ setup(
     entry_points={
         "console_scripts": [
             "tweet_catcher=tweet_catcher.tweet_catcher:main",
-            "tweet_cleaner=tweet_catcher.cleaner:main",
+            "tweet_cleaner=tweet_catcher.tweet_cleaner:main",
             "tweet_converter=tweet_catcher.converter:main",
         ],
     },
