@@ -12,7 +12,7 @@ setup(
     name="tweet_catcher",
     version="0.1.0",
     author="so07",
-    author_email="orlandini.se@gmail.it",
+    author_email="so07git@gmail.it",
     description="",
     long_description=long_description,
     long_description_content_type="text/markdown",
