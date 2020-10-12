@@ -20,10 +20,13 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     install_requires=["twint", "pandas"],
-    entry_points={"console_scripts": [
-        "tweet_catcher=tweet_catcher.catcher:main",
-        "tweet_cleaner=tweet_catcher.cleaner:main",
-        ],},
+    entry_points={
+        "console_scripts": [
+            "tweet_catcher=tweet_catcher.catcher:main",
+            "tweet_cleaner=tweet_catcher.cleaner:main",
+            "tweet_converter=tweet_catcher.converter:main",
+        ],
+    },
     classifiers=[
         "Programming Language :: Python :: 3",
         "Development Status :: 3 - Alpha",
