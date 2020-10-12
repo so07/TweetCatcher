@@ -22,9 +22,9 @@ setup(
     install_requires=["twint", "pandas", "langdetect"],
     entry_points={
         "console_scripts": [
-            "tweet_catcher=tweet_catcher.tweet_catcher:main",
-            "tweet_cleaner=tweet_catcher.tweet_cleaner:main",
-            "tweet_converter=tweet_catcher.converter:main",
+            "tweet_catcher=tweet_catcher.catcher_main:main",
+            "tweet_cleaner=tweet_catcher.cleaner_main:main",
+            #"tweet_converter=tweet_catcher.converter_main:main",
         ],
     },
     classifiers=[
