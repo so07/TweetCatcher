@@ -19,10 +19,10 @@ setup(
     url="https://gitlab.hpc.cineca.it/tweet_catcher",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
-    install_requires=["twint", "pandas"],
+    install_requires=["twint", "pandas", "langdetect"],
     entry_points={
         "console_scripts": [
-            "tweet_catcher=tweet_catcher.catcher:main",
+            "tweet_catcher=tweet_catcher.tweet_catcher:main",
             "tweet_cleaner=tweet_catcher.cleaner:main",
             "tweet_converter=tweet_catcher.converter:main",
         ],
