@@ -40,13 +40,80 @@ def main():
         help="directory where clean tweet data are stored. (default %(default)s)",
     )
 
+    parser.add_argument(
+        "--language",
+        "-l",
+        dest="language",
+        default="en",
+        help="language. (default %(default)s)",
+        choices=[
+            "af",
+            "ar",
+            "bg",
+            "bn",
+            "ca",
+            "cs",
+            "cy",
+            "da",
+            "de",
+            "el",
+            "en",
+            "es",
+            "et",
+            "fa",
+            "fi",
+            "fr",
+            "gu",
+            "he",
+            "hi",
+            "hr",
+            "hu",
+            "id",
+            "it",
+            "ja",
+            "kn",
+            "ko",
+            "lt",
+            "lv",
+            "mk",
+            "ml",
+            "mr",
+            "ne",
+            "nl",
+            "no",
+            "pa",
+            "pl",
+            "pt",
+            "ro",
+            "ru",
+            "sk",
+            "sl",
+            "so",
+            "sq",
+            "sv",
+            "sw",
+            "ta",
+            "te",
+            "th",
+            "tl",
+            "tr",
+            "uk",
+            "ur",
+            "vi",
+            "zh-cn",
+            "zh-tw",
+        ],
+    )
+
     args = parser.parse_args()
 
     set_logging_verbosity(args.verbose)
 
     logger.debug(args)
 
-    df = tweet_cleaner(args.search_path, args.search_pattern, args.verbose,)
+    df = tweet_cleaner(
+        args.search_path, args.search_pattern, args.language, args.verbose,
+    )
 
     write_df_by_date(df, args.output)
 

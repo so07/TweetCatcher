@@ -1,4 +1,6 @@
 import ast
+from langdetect import detect
+
 
 from .catcher_utils import logger, set_logging_verbosity, read_csv
 
@@ -13,6 +15,8 @@ def get_hashtags(df):
 
 
 def remove_duplicates(df):
+    """remove duplicates from dataframe.
+       compare twitter ids."""
 
     ids = df.id.unique()
     logger.debug(f"unique ids: {len(ids)}")
@@ -24,8 +28,21 @@ def remove_duplicates(df):
     return df
 
 
+def language_filter(df, lang):
+    """filter twitter by language."""
+
+    def check_lang(row):
+        if detect(row.tweet) == lang:
+            return True
+        return False
+
+    mask = df.apply(check_lang, axis=1)
+
+    return df[mask]
+
+
 def tweet_cleaner(
-    path, pattern=None, verbose=0,
+    path, pattern=None, lang=None, verbose=0,
 ):
 
     # read dataset
@@ -33,5 +50,9 @@ def tweet_cleaner(
 
     # remove duplicates
     df = remove_duplicates(df)
+
+    # language filter
+    if lang is not None:
+        df = language_filter(df, lang)
 
     return df
