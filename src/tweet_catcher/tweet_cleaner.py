@@ -14,30 +14,40 @@ def get_hashtags(df):
 
 
 def remove_duplicates(df):
-    """remove duplicates from dataframe.
-       compare twitter ids."""
+    """remove tweets duplicated.
+       compare tweet ids."""
+
+    logger.info(f"remove duplicate")
 
     ids = df.id.unique()
+
     logger.debug(f"unique ids: {len(ids)}")
 
     # remove duplicates
     df.drop_duplicates(inplace=True)
-    logger.info(f"dataframe length after removing duplicates: {len(df)}")
+
+    logger.info(f"tweets after removing duplicates: {len(df)}")
 
     return df
 
 
 def language_filter(df, lang):
-    """filter twitter by language."""
+    """filter tweets by language."""
 
     def check_lang(row):
         if detect(row.tweet) == lang:
             return True
         return False
 
+    logger.info(f"filter by language {lang}")
+
     mask = df.apply(check_lang, axis=1)
 
-    return df[mask]
+    df = df[mask]
+
+    logger.info(f"tweets after filter by language: {len(df)}")
+
+    return df
 
 
 def tweet_cleaner(

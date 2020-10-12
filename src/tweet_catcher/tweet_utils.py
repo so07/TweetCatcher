@@ -17,6 +17,7 @@ def set_logging_verbosity(verbose):
 
 
 def make_dir(directory):
+    """make directory if not exists"""
     if not os.path.exists(directory):
         logger.info(f"make dir: {directory}")
         os.makedirs(directory)
@@ -53,7 +54,7 @@ def read_csv(path, pattern="*", extension="csv"):
     # df.date = pd.to_datetime(df.date, format="%Y-%m-%d")
     # df.time = pd.to_datetime(df.time, format="%H:%M:%S")
 
-    logger.info(f"dataframe length: {len(df)}")
+    logger.info(f"tweets: {len(df)}")
 
     logger.debug(df.columns)
 
@@ -80,10 +81,15 @@ def write_df_by_date(df, output, format="csv"):
         # select df by date
         d = df[df.date == date]
 
+        logger.info(f"dataframe length: {len(d)}")
+
+        if d.empty:
+            continue
+
         # write to file
         out_path = os.path.join(output, date + "." + format)
+
         logger.info(f"writing to file: {out_path}")
-        logger.info(f"dataframe length: {len(d)}")
 
         if format == "csv":
             d.to_csv(out_path)
