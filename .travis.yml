@@ -1,10 +1,19 @@
 language: python
 
 python:
-  - "3.6"
+   - "3.6"
+   - "3.7"
+   - "3.8"
 
 install:
-  - pip install .
+   - pip install "attrs>=19.2.0" # need for travis fault
+   #- pip install -r requirements.txt
+   - pip install .
+
+script:
+   - tweet_catcher -h
+   - tweet_cleaner -h
+   - tweet_converter -h
 
 notifications:
    email:
