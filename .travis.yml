@@ -9,11 +9,13 @@ install:
    - pip install "attrs>=19.2.0" # need for travis fault
    #- pip install -r requirements.txt
    - pip install .
+     pip install pytest
 
 script:
    - tweet_catcher -h
    - tweet_cleaner -h
    - tweet_converter -h
+   - pytest
 
 notifications:
    email:
