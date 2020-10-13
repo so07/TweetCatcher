@@ -1,0 +1,12 @@
+language: python
+
+python:
+  - "3.6"
+
+install:
+  - pip install .
+
+notifications:
+   email:
+      on_success: change
+      on_failure: always
