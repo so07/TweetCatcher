@@ -6,7 +6,8 @@ python:
   - "3.8"
 
 install:
-  - pip install -r requirements.txt --upgrade
+  - pip install attrs>=19.2.0
+  - pip install -r requirements.txt
   - pip install .
 
 notifications:
