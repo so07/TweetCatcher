@@ -1,9 +1,8 @@
-* 0.1.1
+* 0.1.2
+  - date range in tweet_catcher
 
+* 0.1.1
   - travis build
 
 * 0.1.0
-
-  - tweet_catcher
-  - tweet_cleaner
-  - tweet_converter
+  - tweet_catcher, tweet_cleaner, tweet_converter
