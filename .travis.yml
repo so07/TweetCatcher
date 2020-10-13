@@ -6,7 +6,7 @@ python:
   - "3.8"
 
 install:
-  - pip install attrs>=19.2.0
+  - pip install "attrs>=19.2.0" # need for travis fault
   - pip install -r requirements.txt
   - pip install .
 
