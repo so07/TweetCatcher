@@ -108,6 +108,27 @@ def main():
         help=f"language. (default %(default)s).\nSupported languages {lang_supported}",
     )
 
+    parser.add_argument(
+        "--refine",
+        dest="refine",
+        action="store_true",
+        help="remove useless keys (mentions, urls, reply_to)",
+    )
+
+    parser.add_argument(
+        "--remove-emoticons",
+        dest="remove_emoticons",
+        action="store_true",
+        help="remove emoticons",
+    )
+
+    parser.add_argument(
+        "--sep",
+        dest="separator",
+        default=",",
+        help="columns separator. (default %(default)s)",
+    )
+
     args = parser.parse_args()
 
     set_logging_verbosity(args.verbose)
@@ -115,10 +136,15 @@ def main():
     logger.debug(args)
 
     df = tweet_cleaner(
-        args.search_path, args.search_pattern, args.language, args.verbose,
+        args.search_path,
+        args.search_pattern,
+        args.language,
+        args.verbose,
+        refine=args.refine,
+        remove_emoticons=args.remove_emoticons,
     )
 
-    write_df_by_date(df, args.output)
+    write_df_by_date(df, args.output, sep=args.separator)
 
 
 if __name__ == "__main__":
