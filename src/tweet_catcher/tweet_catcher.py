@@ -72,7 +72,7 @@ def tweet_catcher(
 
     if freq_in_str is None:
         file_name = f"{search}.csv"
-        twint_call(search, None, None, directory, file_name)
+        twint_call(search, since.strftime("%Y-%m-%d %H:%M:%S"), until.strftime("%Y-%m-%d %H:%M:%S"), directory, file_name)
         return
 
     daterange = pd.date_range(since, until, freq=freq_in_str)
