@@ -10,6 +10,11 @@ install:
   - pip install -r requirements.txt
   - pip install .
 
+script:
+  - tweet_catcher -h
+  - tweet_cleaner -h
+  - tweet_converter -h
+
 notifications:
    email:
       on_success: change
