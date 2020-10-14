@@ -22,7 +22,7 @@ def test_import2():
 
 
 def test_create_file(tmpdir):
-    print(tmpdir)
+    return
     tweet_catcher(
         "MickJagger",
         datetime.strptime("2014-12-31 23:00:00", "%Y-%m-%d %H:%M:%S"),
