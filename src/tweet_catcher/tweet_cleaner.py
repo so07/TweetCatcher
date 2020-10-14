@@ -91,7 +91,13 @@ def emoji_filter(df):
 
 
 def tweet_cleaner(
-    path, pattern=None, lang=None, verbose=0, refine=False, remove_emoticons=False
+    path, pattern=None, lang=None, verbose=0,
+    path,
+    pattern=None,
+    lang=None,
+    verbose=0,
+    refine=False,
+    remove_emoticons=False
 ):
 
     # read dataset

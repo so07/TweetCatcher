@@ -64,7 +64,17 @@ def tweet_catcher(
         logger.info(f"file: {output}")
         # download tweets
         logger.info(f"download tweet")
-        twint_search(search, since, until, output)
+        for i in range(3):  # repeat command
+            try:
+                twint_search(search, since, until, output)
+            except:
+                logger.info("something went wrong. repeat command")
+                if sleep:
+                    time.sleep(sleep)
+                continue
+            else:
+                logger.info("well done!")
+                break
 
     set_logging_verbosity(verbose)
 
