@@ -15,7 +15,7 @@ def get_hashtags(df):
 
 def remove_duplicates(df):
     """remove tweets duplicated.
-       compare tweet ids."""
+    compare tweet ids."""
 
     logger.info(f"remove duplicate")
 
@@ -51,7 +51,10 @@ def language_filter(df, lang):
 
 
 def tweet_cleaner(
-    path, pattern=None, lang=None, verbose=0,
+    path,
+    pattern=None,
+    lang=None,
+    verbose=0,
 ):
 
     # read dataset

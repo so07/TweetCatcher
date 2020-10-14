@@ -55,7 +55,11 @@ def main():
 
     logger.debug(args)
 
-    df = tweet_converter(args.search_path, args.search_pattern, args.verbose,)
+    df = tweet_converter(
+        args.search_path,
+        args.search_pattern,
+        args.verbose,
+    )
 
     write_df_by_date(df, args.output, format=args.format)
 

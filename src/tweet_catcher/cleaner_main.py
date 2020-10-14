@@ -115,7 +115,10 @@ def main():
     logger.debug(args)
 
     df = tweet_cleaner(
-        args.search_path, args.search_pattern, args.language, args.verbose,
+        args.search_path,
+        args.search_pattern,
+        args.language,
+        args.verbose,
     )
 
     write_df_by_date(df, args.output)
