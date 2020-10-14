@@ -2,6 +2,7 @@ import os
 import glob
 import logging
 import datetime
+import csv
 import pandas as pd
 
 logger = logging.getLogger()
@@ -23,7 +24,15 @@ def make_dir(directory):
         os.makedirs(directory)
 
 
+def sniff_sep(f):
+    """return separator in a csv file"""
+    with open(f, "r") as csvfile:
+        dialect = csv.Sniffer().sniff(csvfile.readline(), delimiters=",|?;/")
+    return dialect.delimiter
+
+
 def read_csv(path, pattern="*", extension="csv"):
+    """read csv file and return pandas dataframe"""
 
     # file pattern
     file_pattern = "*"
@@ -45,8 +54,13 @@ def read_csv(path, pattern="*", extension="csv"):
 
     for f in ls:
         logger.debug(f"reading file: {f}")
-        d = pd.read_csv(f)
+
+        sep = sniff_sep(f)
+        logger.debug(f"csv separator: {sep}")
+
+        d = pd.read_csv(f, sep=sep, dtype=str)
         logger.debug(f"dataframe length: {len(d)}")
+
         df = pd.concat([df, d])
 
     # convert date in datetime.date
@@ -61,7 +75,7 @@ def read_csv(path, pattern="*", extension="csv"):
     return df
 
 
-def write_df_by_date(df, output, format="csv"):
+def write_df_by_date(df, output, format="csv", sep=","):
     logger.debug("@write_df_by_date")
 
     if df.empty:
@@ -92,9 +106,9 @@ def write_df_by_date(df, output, format="csv"):
         logger.info(f"writing to file: {out_path}")
 
         if format == "csv":
-            d.to_csv(out_path)
+            d.to_csv(out_path, index=False, sep=sep)
         elif format == "json":
-            d.to_json(out_path)
+            d.to_json(out_path, index=False)
         else:
             raise ValueError(
                 f"format {format} is not supported in write_df_by_date function"

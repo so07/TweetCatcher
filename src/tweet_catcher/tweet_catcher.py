@@ -15,7 +15,7 @@ def twint_search(search, since, until, output):
     c.Search = search
     # c.Username = search
 
-    #c.Limit = 10
+    # c.Limit = 10
 
     c.Since = since
     c.Until = until
@@ -64,7 +64,17 @@ def tweet_catcher(
         logger.info(f"file: {output}")
         # download tweets
         logger.info(f"download tweet")
-        twint_search(search, since, until, output)
+        for i in range(3):  # repeat command
+            try:
+                twint_search(search, since, until, output)
+            except:
+                logger.info("something went wrong. repeat command")
+                if sleep:
+                    time.sleep(sleep)
+                continue
+            else:
+                logger.info("well done!")
+                break
 
     set_logging_verbosity(verbose)
 
@@ -72,7 +82,13 @@ def tweet_catcher(
 
     if freq_in_str is None:
         file_name = f"{search}.csv"
-        twint_call(search, since.strftime("%Y-%m-%d %H:%M:%S"), until.strftime("%Y-%m-%d %H:%M:%S"), directory, file_name)
+        twint_call(
+            search,
+            since.strftime("%Y-%m-%d %H:%M:%S"),
+            until.strftime("%Y-%m-%d %H:%M:%S"),
+            directory,
+            file_name,
+        )
         return
 
     daterange = pd.date_range(since, until, freq=freq_in_str)
