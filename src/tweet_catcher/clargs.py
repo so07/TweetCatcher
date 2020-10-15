@@ -96,3 +96,58 @@ def add_parser_date(parser):
         metavar="xY, xD, xH, xM, xS",
         help="data frequency.\ny/Y for years, d/D for days, h/H for hours, m/M for minutes, s/S for seconds.\n'30M' data frequency with time interval of 30 minutes.",
     )
+
+
+def add_parser_output(parser):
+
+    parser_group = parser.add_argument_group("output options")
+
+    parser_group.add_argument(
+        "--output",
+        "-o",
+        dest="output",
+        default="tweet_clean",
+        help="directory where tweet data are stored. (default %(default)s)",
+    )
+
+
+def add_parser_input(parser):
+
+    parser_group = parser.add_argument_group("input options")
+
+    parser_group.add_argument(
+        "--path",
+        "-p",
+        dest="search_path",
+        default="tweet_search",
+        help="directory where search data files with tweets. (default %(default)s)",
+    )
+
+    parser_group.add_argument(
+        "--pattern",
+        "-P",
+        dest="search_pattern",
+        default=None,
+        help="pattern of file to clean. (default %(default)s)",
+    )
+
+
+def add_parser_format(parser):
+
+    parser_group = parser.add_argument_group("format options")
+
+    parser_group.add_argument(
+        "--format",
+        "-f",
+        dest="format",
+        default="csv",
+        choices=["json", "csv"],
+        help="output file format. (default %(default)s)",
+    )
+
+    parser_group.add_argument(
+        "--sep",
+        dest="separator",
+        default=",",
+        help="output file columns separator. (default %(default)s)",
+    )
