@@ -2,7 +2,13 @@ import argparse
 
 from .tweet_converter import tweet_converter
 from .tweet_utils import logger, set_logging_verbosity, write_df_by_date
-from .clargs import add_parser_debug, add_parser_date
+from .clargs import (
+    add_parser_debug,
+    add_parser_date,
+    add_parser_format,
+    add_parser_input,
+    add_parser_output,
+)
 
 
 def main():
@@ -13,41 +19,11 @@ def main():
         formatter_class=argparse.RawTextHelpFormatter,
     )
 
+    add_parser_input(parser)
+    add_parser_output(parser)
     add_parser_date(parser)
+    add_parser_format(parser)
     add_parser_debug(parser)
-
-    parser.add_argument(
-        "--path",
-        "-p",
-        dest="search_path",
-        default="tweet_search",
-        help="directory where search csv file with tweets. (default %(default)s)",
-    )
-
-    parser.add_argument(
-        "--pattern",
-        "-P",
-        dest="search_pattern",
-        default=None,
-        help="pattern of csv file to clean. (default %(default)s)",
-    )
-
-    parser.add_argument(
-        "--output",
-        "-o",
-        dest="output",
-        default="tweet_clean",
-        help="directory where clean tweet data are stored. (default %(default)s)",
-    )
-
-    parser.add_argument(
-        "--format",
-        "-f",
-        dest="format",
-        default="json",
-        choices=["json", "csv"],
-        help="output file format. (default %(default)s)",
-    )
 
     args = parser.parse_args()
 
@@ -55,13 +31,9 @@ def main():
 
     logger.debug(args)
 
-    df = tweet_converter(
-        args.search_path,
-        args.search_pattern,
-        args.verbose,
-    )
+    df = tweet_converter(args.search_path, args.search_pattern, args.verbose,)
 
-    write_df_by_date(df, args.output, format=args.format)
+    write_df_by_date(df, args.output, format=args.format, sep=args.separator)
 
 
 if __name__ == "__main__":
