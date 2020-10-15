@@ -25,6 +25,7 @@ setup(
             "tweet_catcher=tweet_catcher.catcher_main:main",
             "tweet_cleaner=tweet_catcher.cleaner_main:main",
             "tweet_converter=tweet_catcher.converter_main:main",
+            "tweet_unique=tweet_catcher.unique_main:main",
         ],
     },
     classifiers=[
