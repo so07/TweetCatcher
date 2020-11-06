@@ -14,6 +14,8 @@ def unique_tweets(df, ref_df):
     # compare ids
     unique_ids = np.setdiff1d(ids, ref_ids)
 
+    logger.info(f"tweets before unique: {len(df)}")
+
     # filter dataframe
     df = df[df["id"].isin(unique_ids)]
 
@@ -27,6 +29,7 @@ def tweet_unique(
 ):
 
     # read dataset
+    logger.info("reading dataset to unique")
     df = read_csv(path, pattern, dry_run=dry_run)
 
     if df.empty and not dry_run:
@@ -38,6 +41,7 @@ def tweet_unique(
         df = remove_duplicates(df)
 
     # read reference dataset
+    logger.info("reading reference dataset")
     ref_df = read_csv(reference_path, reference_pattern, dry_run=dry_run)
 
     if not dry_run:
