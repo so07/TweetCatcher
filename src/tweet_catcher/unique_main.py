@@ -29,6 +29,7 @@ def main():
         "--reference-path",
         dest="reference_path",
         required=True,
+        nargs="+",
         help=f"reference to check for duplicates",
     )
 

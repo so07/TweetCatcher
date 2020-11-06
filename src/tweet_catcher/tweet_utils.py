@@ -42,8 +42,15 @@ def read_csv(path, pattern="*", extension="csv", dry_run=False):
 
     logger.debug(f"file patter: {file_pattern}")
 
+    if not isinstance(path, list):
+        path = [path]
+
+    logger.debug(f"file path: {path}")
+
     # list of files
-    ls = glob.glob(os.path.join(path, file_pattern))
+    ls = []
+    for p in path:
+        ls.extend(glob.glob(os.path.join(p, file_pattern)))
     # sort files
     ls = sorted(ls)
 
