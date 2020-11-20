@@ -44,6 +44,8 @@ def read_csv(path, pattern="*", extension="csv"):
 
     # list of files
     ls = glob.glob(os.path.join(path, file_pattern))
+    # sort files by name
+    ls = sorted(ls)
 
     logger.debug(f"Found {len(ls)} files")
     logger.debug(" ".join(ls))
