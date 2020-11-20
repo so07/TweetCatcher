@@ -103,11 +103,18 @@ def add_parser_output(parser):
     parser_group = parser.add_argument_group("output options")
 
     parser_group.add_argument(
-        "--output",
+        "--output-path",
         "-o",
         dest="output",
         default="tweet_clean",
         help="directory where tweet data are stored. (default %(default)s)",
+    )
+
+    parser_group.add_argument(
+        "--output-prefix",
+        dest="output_prefix",
+        default="",
+        help="prefix to output file. (default %(default)s)",
     )
 
 

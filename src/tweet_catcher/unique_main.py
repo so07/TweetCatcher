@@ -27,10 +27,17 @@ def main():
 
     parser.add_argument(
         "--reference-path",
-        "-r",
         dest="reference_path",
         required=True,
+        nargs="+",
         help=f"reference to check for duplicates",
+    )
+
+    parser.add_argument(
+        "--reference-pattern",
+        dest="reference_pattern",
+        default=None,
+        help="pattern of reference. (default %(default)s)",
     )
 
     args = parser.parse_args()
@@ -40,10 +47,22 @@ def main():
     logger.debug(args)
 
     df = tweet_unique(
-        args.search_path, args.search_pattern, args.reference_path, args.verbose,
+        args.search_path,
+        args.search_pattern,
+        args.reference_path,
+        args.reference_pattern,
+        args.verbose,
+        args.dry_run,
     )
 
-    write_df_by_date(df, args.output, format=args.format, sep=args.separator)
+    write_df_by_date(
+        df,
+        args.output,
+        prefix=args.output_prefix,
+        format=args.format,
+        sep=args.separator,
+        dry_run=args.dry_run,
+    )
 
 
 if __name__ == "__main__":
