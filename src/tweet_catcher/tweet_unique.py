@@ -12,6 +12,7 @@ def unique_tweets(df, ref_df):
     ref_ids = ref_df.id.unique()
 
     # compare ids
+    logger.debug(f"compare ids")
     unique_ids = np.setdiff1d(ids, ref_ids)
 
     logger.info(f"tweets before unique: {len(df)}")
