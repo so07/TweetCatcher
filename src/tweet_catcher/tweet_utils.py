@@ -31,7 +31,7 @@ def sniff_sep(f):
     return dialect.delimiter
 
 
-def read_csv(path, pattern="*", extension="csv"):
+def read_csv(path, pattern="*", extension="csv", dry_run=False):
     """read csv file and return pandas dataframe"""
 
     # file pattern
@@ -42,8 +42,17 @@ def read_csv(path, pattern="*", extension="csv"):
 
     logger.debug(f"file patter: {file_pattern}")
 
+    if not isinstance(path, list):
+        path = [path]
+
+    logger.debug(f"file path: {path}")
+
     # list of files
-    ls = glob.glob(os.path.join(path, file_pattern))
+    ls = []
+    for p in path:
+        ls.extend(glob.glob(os.path.join(p, file_pattern)))
+    # sort files
+    ls = sorted(ls)
 
     logger.debug(f"Found {len(ls)} files")
     logger.debug(" ".join(ls))
@@ -58,10 +67,11 @@ def read_csv(path, pattern="*", extension="csv"):
         sep = sniff_sep(f)
         logger.debug(f"csv separator: {sep}")
 
-        d = pd.read_csv(f, sep=sep, dtype=str)
-        logger.debug(f"dataframe length: {len(d)}")
+        if not dry_run:
+            d = pd.read_csv(f, sep=sep, dtype=str)
+            logger.debug(f"dataframe length: {len(d)}")
 
-        df = pd.concat([df, d])
+            df = pd.concat([df, d])
 
     # convert date in datetime.date
 
@@ -75,10 +85,10 @@ def read_csv(path, pattern="*", extension="csv"):
     return df
 
 
-def write_df_by_date(df, output, format="csv", sep=","):
+def write_df_by_date(df, output, prefix="", format="csv", sep=",", dry_run=False):
     logger.debug("@write_df_by_date")
 
-    if df.empty:
+    if df.empty and not dry_run:
         logger.debug("empty dataframe")
         return
 
@@ -100,8 +110,15 @@ def write_df_by_date(df, output, format="csv", sep=","):
         if d.empty:
             continue
 
+        # base name for file
+        if not prefix:
+            base_name = ""
+        else:
+            base_name = prefix + "-"
+        base_name += date
+
         # write to file
-        out_path = os.path.join(output, date + "." + format)
+        out_path = os.path.join(output, base_name + "." + format)
 
         logger.info(f"writing to file: {out_path}")
 

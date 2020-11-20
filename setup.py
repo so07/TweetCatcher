@@ -10,7 +10,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="tweet_catcher",
-    version="0.1.3",
+    version="0.2.0",
     author="so07",
     author_email="so07git@gmail.it",
     description="",
@@ -25,6 +25,7 @@ setup(
             "tweet_catcher=tweet_catcher.catcher_main:main",
             "tweet_cleaner=tweet_catcher.cleaner_main:main",
             "tweet_converter=tweet_catcher.converter_main:main",
+            "tweet_unique=tweet_catcher.unique_main:main",
         ],
     },
     classifiers=[

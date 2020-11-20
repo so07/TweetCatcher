@@ -3,6 +3,7 @@ import argparse
 from .tweet_catcher import tweet_catcher
 from .tweet_utils import logger, set_logging_verbosity
 from .clargs import add_parser_debug, add_parser_date
+from .clargs import add_parser_debug, add_parser_date, add_parser_output
 
 
 def main():
@@ -13,6 +14,7 @@ def main():
         formatter_class=argparse.RawTextHelpFormatter,
     )
 
+    add_parser_output(parser)
     add_parser_date(parser)
     add_parser_debug(parser)
 
@@ -22,14 +24,6 @@ def main():
         dest="pattern",
         required=True,
         help="search pattern for tweets",
-    )
-
-    parser.add_argument(
-        "--output",
-        "-o",
-        dest="output",
-        default="tweet_search",
-        help="directory where tweet data are stored. (default %(default)s)",
     )
 
     parser.add_argument(
