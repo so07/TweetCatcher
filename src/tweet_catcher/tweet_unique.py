@@ -40,7 +40,13 @@ def unique_tweets(df, ref_df, report_only=False):
 
 
 def tweet_unique(
-    path, pattern, reference_path, reference_pattern, report_only=False, verbose=0, dry_run=False
+    path,
+    pattern,
+    reference_path,
+    reference_pattern,
+    report_only=False,
+    verbose=0,
+    dry_run=False,
 ):
 
     # read dataset
