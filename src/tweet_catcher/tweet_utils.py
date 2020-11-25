@@ -31,6 +31,10 @@ def sniff_sep(f):
     return dialect.delimiter
 
 
+def empty_df():
+    return pd.DataFrame()
+
+
 def read_csv(path, pattern="*", extension="csv", dry_run=False):
     """read csv file and return pandas dataframe"""
 
