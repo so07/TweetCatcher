@@ -22,13 +22,21 @@ def main():
         "--pattern",
         "-p",
         dest="pattern",
-        required=True,
+        # required=True,
         help="search pattern for tweets",
     )
 
     parser.add_argument(
-        "--sleep",
-        "-s",
+        "--user",
+        "-u",
+        dest="user",
+        # required=True,
+        default=None,
+        help="twitter user name",
+    )
+
+    parser.add_argument(
+        "--sleep" "-s",
         dest="sleep",
         default=0,
         help="interval in seconds between multiple download. (default %(default)s)",
@@ -42,6 +50,7 @@ def main():
 
     tweet_catcher(
         args.pattern,
+        args.user,
         args.from_date,
         args.to_date,
         args.output,

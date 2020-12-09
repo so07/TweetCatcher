@@ -8,21 +8,30 @@ import datetime
 from .tweet_utils import logger, set_logging_verbosity, make_dir
 
 
-def twint_search(search, since, until, output):
+def twint_search(search=None, user=None, since=None, until=None, output=None):
 
     c = twint.Config()
 
-    c.Search = search
-    # c.Username = search
+    if search is not None:
+        c.Search = search
+
+    if user is not None:
+        c.Username = user
 
     # c.Limit = 10
 
-    c.Since = since
-    c.Until = until
+    if since is not None:
+        c.Since = since
+
+    if until is not None:
+        c.Until = until
+
     c.Hide_output = True
     # c.Debug = True
 
-    c.Output = output
+    if output is not None:
+        c.Output = output
+
     c.Store_csv = True
 
     c.Count = True
@@ -48,16 +57,17 @@ def extend_search(keys):
 
 
 def tweet_catcher(
-    search,
-    since,
-    until,
-    directory,
+    search=None,
+    user=None,
+    since=datetime.datetime(1970, 1, 1).isoformat(sep="T", timespec="minutes"),
+    until=datetime.datetime.now().isoformat(sep="T", timespec="minutes"),
+    directory=os.getcwd(),
     freq_in_str="1D",
     freq_in_timedelta=datetime.timedelta(days=1),
     sleep=2,
     verbose=0,
 ):
-    def twint_call(search, since, until, directory, file_name):
+    def twint_call(search, user, since, until, directory, file_name):
         file_name = file_name.replace(" ", "_")
         # path to file
         output = os.path.join(directory, file_name)
@@ -66,7 +76,7 @@ def tweet_catcher(
         logger.info(f"download tweet")
         for i in range(3):  # repeat command
             try:
-                twint_search(search, since, until, output)
+                twint_search(search, user, since, until, output)
             except:
                 logger.info("something went wrong. repeat command")
                 if sleep:
@@ -76,6 +86,9 @@ def tweet_catcher(
                 logger.info("well done!")
                 break
 
+    if search is None and user is None:
+        raise ValueError(f"search and user arguments can not be both None")
+
     set_logging_verbosity(verbose)
 
     make_dir(directory)
@@ -84,6 +97,7 @@ def tweet_catcher(
         file_name = f"{search}.csv"
         twint_call(
             search,
+            user,
             since.strftime("%Y-%m-%d %H:%M:%S"),
             until.strftime("%Y-%m-%d %H:%M:%S"),
             directory,
@@ -94,6 +108,8 @@ def tweet_catcher(
     daterange = pd.date_range(since, until, freq=freq_in_str)
     logger.info(f"data range: {daterange}")
 
+    file_basename = user if search is None else search
+
     for start_date in daterange:
 
         # define data range
@@ -102,10 +118,10 @@ def tweet_catcher(
         logger.info(f"data range: {since} {until}")
 
         # file name
-        file_name = f"{search}_{since}.csv"
+        file_name = f"{file_basename}_{since}.csv"
 
         # download tweets
-        twint_call(search, since, until, directory, file_name)
+        twint_call(search, user, since, until, directory, file_name)
 
         # wait
         if sleep:
