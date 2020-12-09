@@ -40,6 +40,13 @@ def main():
         help="pattern of reference. (default %(default)s)",
     )
 
+    parser.add_argument(
+        "--report-only",
+        dest="report_only",
+        action="store_true",
+        help="show report of duplicates",
+    )
+
     args = parser.parse_args()
 
     set_logging_verbosity(args.verbose)
@@ -51,9 +58,13 @@ def main():
         args.search_pattern,
         args.reference_path,
         args.reference_pattern,
+        args.report_only,
         args.verbose,
         args.dry_run,
     )
+
+    if args.report_only:
+        return
 
     write_df_by_date(
         df,

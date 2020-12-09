@@ -1,7 +1,7 @@
 import re
 import datetime
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 
 def add_parser_debug(parser):
@@ -126,6 +126,7 @@ def add_parser_input(parser):
         "--path",
         "-p",
         dest="search_path",
+        nargs="+",
         default="tweet_search",
         help="directory where search data files with tweets. (default %(default)s)",
     )

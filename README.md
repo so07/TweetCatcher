@@ -18,6 +18,7 @@ Download tweets with a pattern in a date range and save output as csv format in 
 tweet_catcher --pattern MickJagger --from 2014-12-31T23:00:00 --to 2015-01-01T01:00:00 --output mick
 ```
 
+
 ## Tweets Cleaner
 
 
@@ -25,5 +26,14 @@ Clean tweets from duplicates and filter by language
 
 ```
 tweet_cleaner --path mick --language en --output mick_clean --freq 1D
+```
+
+
+## Tweets Uniquer
+
+Get only unique tweets from reference path
+
+```
+tweet_unique --path mick_unique --reference-path mick
 ```
 
