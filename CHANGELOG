@@ -1,3 +1,7 @@
+* TBD
+  - multiple selection in input path
+  - report-only option for tweet_unique
+
 * 0.2.0
   - unique tool for extract only unique tweet
 
