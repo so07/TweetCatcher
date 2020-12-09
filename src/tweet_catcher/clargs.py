@@ -126,6 +126,7 @@ def add_parser_input(parser):
         "--path",
         "-p",
         dest="search_path",
+        nargs="+",
         default="tweet_search",
         help="directory where search data files with tweets. (default %(default)s)",
     )
