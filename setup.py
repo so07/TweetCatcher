@@ -10,7 +10,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="tweet_catcher",
-    version="0.2.0",
+    version="0.3.0",
     author="so07",
     author_email="so07git@gmail.it",
     description="",
