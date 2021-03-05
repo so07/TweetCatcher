@@ -64,7 +64,7 @@ def tweet_catcher(
     directory=os.getcwd(),
     freq_in_str="1D",
     freq_in_timedelta=datetime.timedelta(days=1),
-    sleep=2,
+    sleep=10,
     verbose=0,
 ):
     def twint_call(search, user, since, until, directory, file_name):
@@ -74,7 +74,7 @@ def tweet_catcher(
         logger.info(f"file: {output}")
         # download tweets
         logger.info(f"download tweet")
-        for i in range(3):  # repeat command
+        for i in range(8):  # repeat command
             try:
                 twint_search(search, user, since, until, output)
             except:
