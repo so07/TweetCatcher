@@ -95,8 +95,15 @@ def main():
     )
 
     parser.add_argument(
-        "--refine",
-        dest="refine",
+        "--remove-duplicates",
+        dest="remove_duplicates",
+        action="store_true",
+        help="remove duplicated tweets",
+    )
+
+    parser.add_argument(
+        "--remove-keys",
+        dest="remove_keys",
         action="store_true",
         help="remove useless keys (mentions, urls, reply_to)",
     )
@@ -119,11 +126,18 @@ def main():
         args.search_pattern,
         args.language,
         args.verbose,
-        refine=args.refine,
-        remove_emoticons=args.remove_emoticons,
+        no_duplicates=args.remove_duplicates,
+        no_useless_keys=args.remove_keys,
+        no_emoticons=args.remove_emoticons,
     )
 
-    write_df_by_date(df, args.output, format=args.format, sep=args.separator)
+    write_df_by_date(
+        df,
+        args.output,
+        prefix=args.output_prefix,
+        format=args.format,
+        sep=args.separator,
+    )
 
 
 if __name__ == "__main__":

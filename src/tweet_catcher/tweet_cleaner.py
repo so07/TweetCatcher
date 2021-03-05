@@ -25,7 +25,8 @@ def remove_duplicates(df):
     logger.debug(f"unique ids: {len(ids)}")
 
     # remove duplicates
-    df.drop_duplicates(inplace=True)
+    df.drop_duplicates(subset=["id"], inplace=True)
+    # df.drop_duplicates(inplace=True)
 
     logger.info(f"tweets after removing duplicates: {len(df)}")
 
@@ -58,7 +59,7 @@ def language_filter(df, lang):
     return df
 
 
-def emoji_filter(df):
+def remove_emoticons(df):
 
     # https://stackoverflow.com/a/49146722/330558
     def remove_emoji(string):
@@ -91,7 +92,13 @@ def emoji_filter(df):
 
 
 def tweet_cleaner(
-    path, pattern=None, lang=None, verbose=0, refine=False, remove_emoticons=False
+    path,
+    pattern=None,
+    lang=None,
+    verbose=0,
+    no_duplicates=True,
+    no_useless_keys=False,
+    no_emoticons=False,
 ):
 
     # read dataset
@@ -102,11 +109,12 @@ def tweet_cleaner(
         return df
 
     # remove duplicates
-    df = remove_duplicates(df)
+    if no_duplicates:
+        df = remove_duplicates(df)
 
     # remove emoticons
-    if remove_emoticons:
-        df = emoji_filter(df)
+    if no_emoticons:
+        df = remove_emoticons(df)
 
     # remove empty line
     logger.info("remove empty lines")
@@ -116,7 +124,7 @@ def tweet_cleaner(
     if lang is not None:
         df = language_filter(df, lang)
 
-    if refine:
+    if no_useless_keys:
         # remove useless columns
         keys_to_remove = [
             "mentions",
