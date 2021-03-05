@@ -1,4 +1,5 @@
-* TBD
+* 0.3.0
+  - user option in TweetCatcher
   - multiple selection in input path
   - report-only option for tweet_unique
 
